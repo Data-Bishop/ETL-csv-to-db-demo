@@ -1,0 +1,12 @@
+database:
+  host: your_host
+  user: your_username
+  port: your_port
+  password: ${DB_PAASWORD}
+  database: ${DB_NAME}
+
+paths:
+  data_dir: "ETLpipeline/data"
+
+transform:
+  salary_multiplier: 1.1
