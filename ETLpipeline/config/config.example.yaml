@@ -1,9 +1,12 @@
 database:
   host: your_host
-  user: your_username
   port: your_port
-  password: ${DB_PAASWORD}
-  database: ${DB_NAME}
+  user: your_username
+  password: your_password
+  database: your_database
+  table: your_table
+  pool_size: 2
+  timeout: 30
 
 paths:
   data_dir: "ETLpipeline/data"
