@@ -1,6 +1,10 @@
 from ETLpipeline.utils.db import get_db_connection
 import psycopg2
 import pandas as pd
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 class LoadData:
     def __init__(self):
@@ -10,7 +14,7 @@ class LoadData:
 
     def load_to_db(self, table_name: str, data: pd.DataFrame) -> None:
         if not self.conn:
-            print("Database connection is not established")
+            logger.info("Database connection coould not be established")
             return None
         try:
             for index, row in data.iterrows():
@@ -24,12 +28,12 @@ class LoadData:
             
             # Commit the transaction
             self.conn.commit()
-            print(f"Inserted {len(data)} rows into {table_name}.")
+            logger.info(f"Inserted {len(data)} rows into {table_name}.")
         except psycopg2.Error as e:
-            print(f"Error inserting data: {e}")
+            logger.error(f"Error inserting data: {e}")
             self.conn.rollback()  # Rollback if error occurs
         except Exception as e:
-            print(f"Unexpected error: {e}")
+            logger.error(f"Unexpected error: {e}")
             self.conn.rollback()
 
     def close_connection(self) -> None:
@@ -37,4 +41,4 @@ class LoadData:
             self.cursor.close()
         if self.conn:
             self.conn.close()
-            print("Database connection closed.")
+            logger.info("Database connection closed.")

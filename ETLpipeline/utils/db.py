@@ -3,6 +3,10 @@ from ETLpipeline.config import config
 import psycopg2
 from psycopg2 import OperationalError
 from psycopg2.extensions import connection
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 def get_db_connection() -> connection | None:
     db_config = config.get_database_config()
@@ -23,8 +27,8 @@ def get_db_connection() -> connection | None:
         conn = connection_pool.getconn()
         
         if conn:
-            print("Successfully connected to the PostgreSQL database.")
+            logger.info("Successfully connected to the PostgreSQL database.")
             return conn
     except OperationalError as e:
-        print(f"Error while connecting to PostgreSQL: {e}")
+        logger.error(f"Error while connecting to PostgreSQL: {e}")
         return None

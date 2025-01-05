@@ -1,5 +1,9 @@
 from ETLpipeline.config import config
 import pandas as pd
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 class TransformData:
     def __init__(self, data: pd.DataFrame):
@@ -8,6 +12,9 @@ class TransformData:
         self.transformed_data = self.bonus_increment()
 
     def bonus_increment(self) -> pd.DataFrame:
-        multiplier = self.config['salary_multiplier']
-        self.data['salary'] = self.data['salary'] * multiplier
-        return self.data
+        try:
+            multiplier = self.config['salary_multiplier']
+            self.data['salary'] = self.data['salary'] * multiplier
+            return self.data
+        except Exception as e:
+            logger.error('Error encountered while transforming data: {e}')

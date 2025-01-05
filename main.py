@@ -2,7 +2,10 @@ from ETLpipeline.core.extraction  import  ExtractData
 from ETLpipeline.core.transform import TransformData
 from ETLpipeline.core.load import LoadData
 from ETLpipeline.config import config
+import logging
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 def main():
     path_config = config.get_paths()
     db_config = config.get_database_config()
@@ -14,7 +17,7 @@ def main():
     transformed_data = TransformData(extracted_data.data)
     
     if transformed_data is not None:
-        print("Data extraction and transformstion successful")
+        logger.info("Data extraction and transformstion successful")
 
         loader = LoadData()
         try:
@@ -22,7 +25,7 @@ def main():
         finally:
             loader.close_connection()
     else:
-        print("ETLpipeline failure")
+        logger.error("ETL pipeline failure")
 
 if __name__ == "__main__":
     main()
